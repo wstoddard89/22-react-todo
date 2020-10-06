@@ -52,6 +52,7 @@ function doExampleAsync() {
 export function useExample() {
   const dispatch = useDispatch()
   const example = useSelector((app) => app.exampleState.example)
+  console.log(example)
   const list = useSelector((app) => app.exampleState.list)
   const setExample = (text) => dispatch(doExample(text))
   const exampleAsync = () => dispatch(doExampleAsync())
