@@ -5,26 +5,22 @@ export default () => {
   const { todos, addToDo, removeToDo, finishToDo } = useToDo()
   const [inputText, setInputText] = useState("")
  
-
-
-
   function handleSubmit(e) {
     e.preventDefault()
-    setInputText("")
     addToDo(inputText)
+    setInputText("")
   }
 
   function handleComp(id) {
     finishToDo(id)
   }
-
   return (
     <div className="container">
       <div className="form-container">
         <p className="form-header">todos</p>
         <form className="form" onSubmit={handleSubmit}>
           
-
+        
           <input
             placeholder="What needs to be done?"
             className="todo-input"
@@ -43,7 +39,7 @@ export default () => {
                   type="checkbox"
                   onClick={() => handleComp(item.id)}
                 ></input>
-                <span className={item.completed === true ? "completed" : ""}>{item.input}</span>
+                <span className={item.completed ? "completed" : ""}>{item.input}</span>
                 </div>
                 <button
                   type="button"

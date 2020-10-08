@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 const ADD_TODO = "todo/ADD_TODO"
 const DELETE_TODO = "todo/DELETE_TODO"
 const COMPLETED_TODO = "todo/COMPLETE_TODO"
+const RESET_TODO = "todo/RESET_TODO"
 
 // 3. initial state
 const initialState = {
