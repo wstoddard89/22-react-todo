@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 // 2. action definitions
 const ADD_TODO = "todo/ADD_TODO"
 const DELETE_TODO = "todo/DELETE_TODO"
-const COMPLETE_TODO = "todo/COMPLETE_TODO"
+const COMPLETED_TODO = "todo/COMPLETE_TODO"
 
 // 3. initial state
 const initialState = {
@@ -19,23 +19,29 @@ function generateId() {
   })
 }
 
-console.log(generateId())
-
 // 4. reducer
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_TODO:
       return {
         ...state,
-        todos: [...state.todos, { id: generateId(), input: action.payload }],
+        todos: [...state.todos, { id: generateId(), input: action.payload, completed: false }],
       }
     case DELETE_TODO:
       return {
         ...state,
         todos: state.todos.filter((todo) => todo.id !== action.payload),
       }
-    case COMPLETE_TODO:
-      return { ...state, todos: [...state.todos, action.payload] }
+    case COMPLETED_TODO:
+      return { 
+        ...state,
+        todos: state.todos.map((todo) => {
+          if (todo.id === action.payload) {
+            todo.completed = !todo.completed
+          }
+          return todo
+        }),
+      }
     default:
       return state
   }
@@ -57,17 +63,27 @@ function deleteToDo(id) {
 }
 
 function completeToDo(id) {
-  return {
-    type: COMPLETE_TODO,
-    payload: id,
+  let completed = ADD_TODO.completed
+  if (completed === false) {
+    return {
+      completed: true,
+      type: COMPLETED_TODO,
+      payload: id,
+    }
+  } else {
+    return {
+      completed: false,
+      type: COMPLETED_TODO,
+      payload: id,
+    }
   }
 }
+ 
 
 // 6. custom hook
 export function useToDo() {
   const dispatch = useDispatch()
   const todos = useSelector((app) => app.TodosState.todos)
-  console.log(todos)
   const addToDo = (input) => dispatch(makeToDo(input))
   const removeToDo = (id) => dispatch(deleteToDo(id))
   const finishToDo = (id) => dispatch(completeToDo(id))
